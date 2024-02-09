@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import os
 import asyncio
 import json
 import time
@@ -76,7 +77,7 @@ class YDocWebSocketHandler(WebSocketHandler, JupyterHandler):
             if self._room_id.count(":") >= 2:
                 # DocumentRoom
                 file_format, file_type, file_id = decode_file_path(self._room_id)
-                if file_id in self._file_loaders:
+                if file_id in self._file_loaders and "JUPYTER_COLLABORATION_DISABLE_WARNINGS" not in os.environ:
                     self._emit(
                         LogLevel.WARNING,
                         None,
